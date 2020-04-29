@@ -136,6 +136,10 @@ body {
   bottom: 0;
 }
 
+.swal-footer {
+  text-align: center !important;
+}
+
 @media (max-width: 768px) {
   .meter {
     width: 100%;

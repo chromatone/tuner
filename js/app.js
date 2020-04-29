@@ -20,8 +20,8 @@ Application.prototype.start = function() {
   }
 
   swal({
-    title: 'Chromatone tuner',
-    text: 'Tune your notes to the color',
+    title: 'Chromatone color tuner',
+    text: 'Tune your notes to the right colors',
     button: 'Start!',
   }).then(function() {
     self.tuner.init()
