@@ -10,7 +10,7 @@ const Notes = function(selector, tuner) {
 }
 
 Notes.prototype.createNotes = function() {
-  const minOctave = 2
+  const minOctave = 1
   const maxOctave = 5
   for (var octave = minOctave; octave <= maxOctave; octave += 1) {
     for (var n = 0; n < 12; n += 1) {
@@ -22,6 +22,7 @@ Notes.prototype.createNotes = function() {
       $note.dataset.frequency = this.tuner.getStandardFrequency(
         $note.dataset.value
       )
+      $note.style.color = 'hsla(' +(n-9)*30+ ',100%,' + (octave+4)*8 + '%,1)';
       $note.innerHTML =
         $note.dataset.name[0] +
         '<span class="note-sharp">' +
@@ -56,6 +57,7 @@ Notes.prototype.createNotes = function() {
 }
 
 Notes.prototype.active = function($note) {
+  document.body.style.backgroundColor = $note.style.color
   this.clearActive()
   $note.classList.add('active')
   this.$notesList.scrollLeft =
@@ -63,6 +65,7 @@ Notes.prototype.active = function($note) {
 }
 
 Notes.prototype.clearActive = function() {
+
   const $active = this.$notesList.querySelector('.active')
   if ($active) {
     $active.classList.remove('active')

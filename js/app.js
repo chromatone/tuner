@@ -19,7 +19,11 @@ Application.prototype.start = function() {
     }
   }
 
-  swal('Welcome online tuner!').then(function() {
+  swal({
+    title: 'Chromatone tuner',
+    text: 'Tune your notes to the color',
+    button: 'Start!',
+  }).then(function() {
     self.tuner.init()
     self.frequencyData = new Uint8Array(self.tuner.analyser.frequencyBinCount)
   })

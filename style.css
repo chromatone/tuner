@@ -12,6 +12,7 @@ body {
   cursor: default;
   -webkit-user-select: none;
   -moz-user-select: none;
+  transition: all 300ms;
 }
 
 .notes {
@@ -34,7 +35,7 @@ body {
 }
 
 .note.active {
-  color: #e74c3c;
+  color: #333 !important;
 }
 
 .notes-list {
