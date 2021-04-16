@@ -1,4 +1,4 @@
-const Notes = function(selector, tuner) {
+const Notes = function (selector, tuner) {
   this.tuner = tuner
   this.isAutoMode = true
   this.$root = document.querySelector(selector)
@@ -9,7 +9,7 @@ const Notes = function(selector, tuner) {
   this.createNotes()
 }
 
-Notes.prototype.createNotes = function() {
+Notes.prototype.createNotes = function () {
   const minOctave = 1
   const maxOctave = 5
   for (var octave = minOctave; octave <= maxOctave; octave += 1) {
@@ -20,9 +20,10 @@ Notes.prototype.createNotes = function() {
       $note.dataset.value = 12 * (octave + 1) + n
       $note.dataset.octave = octave.toString()
       $note.dataset.frequency = this.tuner.getStandardFrequency(
-        $note.dataset.value
+        $note.dataset.value,
       )
-      $note.style.color = 'hsla(' +(n-9)*30+ ',100%,' + (octave+4)*8 + '%,1)';
+      $note.style.color =
+        'hsla(' + (n - 9) * 30 + ',70%,' + (octave + 2) * 8 + '%,1)'
       $note.innerHTML =
         $note.dataset.name[0] +
         '<span class="note-sharp">' +
@@ -38,8 +39,8 @@ Notes.prototype.createNotes = function() {
   }
 
   const self = this
-  this.$notes.forEach(function($note) {
-    $note.addEventListener('click', function() {
+  this.$notes.forEach(function ($note) {
+    $note.addEventListener('click', function () {
       if (self.isAutoMode) {
         return
       }
@@ -56,7 +57,7 @@ Notes.prototype.createNotes = function() {
   })
 }
 
-Notes.prototype.active = function($note) {
+Notes.prototype.active = function ($note) {
   document.body.style.backgroundColor = $note.style.color
   this.clearActive()
   $note.classList.add('active')
@@ -64,24 +65,23 @@ Notes.prototype.active = function($note) {
     $note.offsetLeft - (this.$notesList.clientWidth - $note.clientWidth) / 2
 }
 
-Notes.prototype.clearActive = function() {
-
+Notes.prototype.clearActive = function () {
   const $active = this.$notesList.querySelector('.active')
   if ($active) {
     $active.classList.remove('active')
   }
 }
 
-Notes.prototype.update = function(note) {
+Notes.prototype.update = function (note) {
   if (note.value in this.$notesMap) {
     this.active(this.$notesMap[note.value])
     this.$frequency.childNodes[0].textContent = parseFloat(
-      note.frequency
+      note.frequency,
     ).toFixed(1)
   }
 }
 
-Notes.prototype.toggleAutoMode = function() {
+Notes.prototype.toggleAutoMode = function () {
   if (this.isAutoMode) {
     this.clearActive()
   }
