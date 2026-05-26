@@ -1,20 +1,26 @@
-const Application = function() {
+const Application = function () {
   this.tuner = new Tuner()
   this.notes = new Notes('.notes', this.tuner)
   this.meter = new Meter('.meter')
   this.frequencyBars = new FrequencyBars('.frequency-bars')
+  this.noteCounter = 0
+  this.hysteresisThreshold = 3
   this.update({ name: 'A', frequency: 440, octave: 4, value: 69, cents: 0 })
 }
 
-Application.prototype.start = function() {
+Application.prototype.start = function () {
   const self = this
 
-  this.tuner.onNoteDetected = function(note) {
+  this.tuner.onNoteDetected = function (note) {
     if (self.notes.isAutoMode) {
       if (self.lastNote === note.name) {
-        self.update(note)
+        self.noteCounter++
+        if (self.noteCounter >= self.hysteresisThreshold) {
+          self.update(note)
+        }
       } else {
         self.lastNote = note.name
+        self.noteCounter = 0
       }
     }
   }
@@ -23,7 +29,7 @@ Application.prototype.start = function() {
     title: 'Chromatone color tuner',
     text: 'Tune your notes to the right colors',
     button: 'Start!',
-  }).then(function() {
+  }).then(function () {
     self.tuner.init()
     self.frequencyData = new Uint8Array(self.tuner.analyser.frequencyBinCount)
   })
@@ -33,7 +39,7 @@ Application.prototype.start = function() {
   }
 }
 
-Application.prototype.updateFrequencyBars = function() {
+Application.prototype.updateFrequencyBars = function () {
   if (this.tuner.analyser) {
     this.tuner.analyser.getByteFrequencyData(this.frequencyData)
     this.frequencyBars.update(this.frequencyData)
@@ -41,13 +47,13 @@ Application.prototype.updateFrequencyBars = function() {
   requestAnimationFrame(this.updateFrequencyBars.bind(this))
 }
 
-Application.prototype.update = function(note) {
+Application.prototype.update = function (note) {
   this.notes.update(note)
   this.meter.update((note.cents / 50) * 45)
 }
 
 // noinspection JSUnusedGlobalSymbols
-Application.prototype.toggleAutoMode = function() {
+Application.prototype.toggleAutoMode = function () {
   this.notes.toggleAutoMode()
 }
 
